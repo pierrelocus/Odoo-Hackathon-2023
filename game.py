@@ -28,7 +28,6 @@ class Game:
                 self.game_state = GameState.ENDED
             #     handle key events
         keys = pygame.key.get_pressed()
-        print(keys)
         if keys[pygame.K_ESCAPE]:
             self.game_state = GameState.ENDED
         if keys[pygame.K_w]: # up
