@@ -6,7 +6,7 @@ from game import Game
 
 pygame.init()
 
-screen = pygame.display.set_mode((600, 400))
+screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
 
 pygame.display.set_caption("Pokemon Clone")
 
