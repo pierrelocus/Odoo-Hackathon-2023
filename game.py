@@ -13,12 +13,10 @@ class Game:
         player = Player(1, 1)
         self.player = player
         self.objects.append(player)
-        print("do set up")
         self.game_state = GameState.RUNNING
 
     def update(self):
         self.screen.fill(config.BLACK)
-        print("update")
         self.handle_events()
 
         for object in self.objects:
@@ -29,15 +27,15 @@ class Game:
             if event.type == pygame.QUIT:
                 self.game_state = GameState.ENDED
             #     handle key events
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    self.game_state = GameState.ENDED
-                elif event.key == pygame.K_w: # up
-                    self.player.update_position(0, -1)
-                elif event.key == pygame.K_s: # down
-                    self.player.update_position(0, 1)
-                elif event.key == pygame.K_a: # up
-                    self.player.update_position(-1, 0)
-                elif event.key == pygame.K_d: # up
-                    self.player.update_position(1, 0)
-
+        keys = pygame.key.get_pressed()
+        print(keys)
+        if keys[pygame.K_ESCAPE]:
+            self.game_state = GameState.ENDED
+        if keys[pygame.K_w]: # up
+            self.player.update_position(0, -1)
+        if keys[pygame.K_s]: # down
+            self.player.update_position(0, 1)
+        if keys[pygame.K_a]: # up
+            self.player.update_position(-1, 0)
+        if keys[pygame.K_d]: # up
+            self.player.update_position(1, 0)
