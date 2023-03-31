@@ -17,6 +17,7 @@ class Game:
 
     def update(self):
         self.screen.fill(config.BLACK)
+        
         self.handle_events()
 
         for object in self.objects:
