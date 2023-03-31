@@ -8,7 +8,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
 
-pygame.display.set_caption("Pokemon Clone")
+pygame.display.set_caption("HACKATON TIME CAPSULE")
 
 clock = pygame.time.Clock()
 
@@ -16,6 +16,6 @@ game = Game(screen)
 game.set_up()
 
 while game.game_state == GameState.RUNNING:
-    clock.tick(50)
+    clock.tick(15)
     game.update()
     pygame.display.flip()
