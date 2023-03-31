@@ -10,7 +10,6 @@ class Player:
         print("player updated")
 
     def update_position(self, x_change, y_change):
-        print('Positions : %s %s' % (self.position[0], self.position[1]))
         if not (self.position[0] == 0 and x_change < 0) and \
             not (self.position[0] * config.SCALE >= (config.WIDTH - config.SCALE) and x_change > 0):
             self.position[0] += x_change
