@@ -1,8 +1,7 @@
-
 # colours
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 SCALE = 10
-WIDTH = 600
-HEIGHT = 400
+WIDTH = 1200
+HEIGHT = 720
