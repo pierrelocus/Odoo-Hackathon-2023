@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from dialogs import DialogBox
 import pygame, pytmx, pyscroll
 
 
@@ -28,7 +27,6 @@ class MapManager:
         self.screen = screen
         self.player = player
         self.current_map = "map"
-        self.dialog_box = DialogBox()
 
         self.register_map("map", portals=[
             Portal(from_world="map", origin_point="enter_house_1", target_map="house_1", teleport_point="player"),
