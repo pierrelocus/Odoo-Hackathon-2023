@@ -54,23 +54,6 @@ class Game:
         # Définir le logo du jeu
         pygame.display.set_icon(self.player.get())
 
-        # Les collisions
-        self.walls = []
-        self.hints = []
-        self.panels = []
-
-        for obj in self.tmx_data.objects:
-            if obj.type == "collision":
-                self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == "hint":
-                self.hints.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == 'panel':
-                self.panels.append({'name': obj.name, 'rect': pygame.Rect(obj.x, obj.y, obj.width, obj.height)})
-
-        # Dessiner les différents calques
-        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=3)
-        self.group.add(self.player)
-
         # Dessiner les différents calques
         font = pygame.font.SysFont('Times New Roman', 50)
         texts = ['Hi', 'Hello', 'Who are ye?', 'Someone']
@@ -198,6 +181,9 @@ class Game:
         for letter in alphabet:
             if not pressed[letter]:
                 setattr(self, chr(letter) + '_pressed', True)
+    def show_dialog_box(self, string, wooden_panel_type=False):
+        self.dialog_box = DialogBox(panel=wooden_panel_type, texts=[string], years=self.current_years_to_open_new_panel)
+        self.dialog_box.render(self.screen)
 
     def update(self):
         self.map_manager.update()
@@ -211,14 +197,14 @@ class Game:
             self.player.save_location()
             self.handle_input()
             self.update()
-            self.group.center(self.player.rect.center)
-            self.group.draw(self.screen)
             self.show_dialog = False
-            for sprite in self.group.sprites():
-                if sprite.feet.collidelist([panel['rect'] for panel in self.panels]) > -1:
+            for sprite in self.map_manager.get_group().sprites():
+                if sprite.feet.collidelist([panel['rect'] for panel in self.map_manager.get_map().panels]) > -1:
+                    print('COLLLIDED WITH A PANEL')
                     self.is_on_prompt = True
-                    for panel in self.panels:
+                    for panel in self.map_manager.get_map().panels:
                         if sprite.feet.collidelist([panel['rect']]) > -1 and not ('new' in panel['name']):
+                            print('SHOULD SHOW DIALOG BOX')
                             self.show_dialog_box('Oh here is mom\'s panel !')
                             self.show_dialog = True
                             break
@@ -226,10 +212,11 @@ class Game:
                     break
             if self.is_display_wooden_panel:
                 self.player.status = PlayerStatus.LOCK
-                for sprite in self.group.sprites():
-                    for panel in self.panels:
+                for sprite in self.map_manager.get_group().sprites():
+                    for panel in self.map_manager.get_map().panels:
                         if sprite.feet.collidelist([panel['rect']]) > -1:
                             self.current_panel_writing = panel
+                            print('PUSHED ENTER, NEED TO SHOW DIALOG BOX WITH PANNEL')
                             if not 'new' in panel['name'] or ('new' in panel['name'] and panel['name'] in self.panel_texts.keys()):
                                 self.show_dialog_box(self.panel_texts[panel['name']], wooden_panel_type='read')
                             else:
