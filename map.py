@@ -3,7 +3,13 @@ from dialogs import DialogBox
 import pygame, pytmx, pyscroll
 
 
-
+@dataclass
+class Panel:
+    name:str
+    story:str
+    opening_date: str
+    user:str
+    themes:str
 @dataclass
 class Portal:
     from_world: str
@@ -19,7 +25,7 @@ class Map:
     group: pyscroll.PyscrollGroup
     tmx_data: pytmx.TiledMap
     portals: []
-    panels: []
+    panels:  list[pygame.Rect]
 
 
 class MapManager:
@@ -41,17 +47,16 @@ class MapManager:
         self.register_map("house_2", portals=[
             Portal(from_world="house_2", origin_point="return", target_map="map", teleport_point="exit_2"), ])
         self.register_map("house_3", portals=[
-            Portal(from_world="house_3", origin_point="return", target_map="map", teleport_point="exit_3"), ])
+            Portal(from_world="house_3", origin_point="return", target_map="map", teleport_point="exit_3")],
+                          panels=[Panel(name="panel",story="zebi",opening_date="Hier",user="Ta mere",themes="caca")])
 
         self.teleport_player("player")
 
-    def check_panel_collision(self, panel):
-        for sprite in self.get_group().sprites():
-            if sprite.feet.colliderect(self.player.rect) :
-                print("hhehe")
-
-
     def check_collisions(self):
+        for sprite in self.get_group().sprites():
+            if sprite.feet.collidelist(self.get_panels()) > -1:
+                sprite.move_back()
+
 
         # potrals
         for portal in self.get_map().portals:
@@ -93,7 +98,7 @@ class MapManager:
             if obj.type == "collision":
                 walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
             if obj.type == 'panel':
-                panels.append({'name': obj.name, 'rect': pygame.Rect(obj.x, obj.y, obj.width, obj.height)})
+                panels.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
         # Dessiner les différents calques
         group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=5)
@@ -110,6 +115,9 @@ class MapManager:
 
     def get_walls(self):
         return self.get_map().walls
+
+    def get_panels(self):
+        return self.get_map().panels
 
     def get_object(self, name):
         return self.get_map().tmx_data.get_object_by_name(name)
