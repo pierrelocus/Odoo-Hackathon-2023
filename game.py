@@ -203,9 +203,9 @@ class Game:
         # Clock
         clock = pygame.time.Clock()
 
-        import moviepy.editor as meditor
-        clip = meditor.VideoFileClip('POKEMON_START.mp4')
-        clip.preview()
+        # import moviepy.editor as meditor
+        # clip = meditor.VideoFileClip('POKEMON_START.mp4')
+        # clip.preview()
 
         while self.running:
 

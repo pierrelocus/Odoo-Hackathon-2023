@@ -79,7 +79,7 @@ class MapManager:
                 self.panels.append({'name': obj.name, 'rect': pygame.Rect(obj.x, obj.y, obj.width, obj.height)})
 
         # Dessiner les différents calques
-        group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=5)
+        group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=3)
         group.add(self.player)
 
         # map
