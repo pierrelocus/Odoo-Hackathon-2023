@@ -50,6 +50,7 @@ class Game:
         pygame.display.set_caption("BasiqueGame")
         self.player = Player(50,50)
         self.map_manager = MapManager(self.screen,self.player)
+        self.dialog_box = DialogBox()
         # Définir le logo du jeu
         pygame.display.set_icon(self.player.get())
 
@@ -90,13 +91,15 @@ class Game:
             self.handle_input()
             self.update()
             self.map_manager.draw()
-
+            self.dialog_box.render(self.screen)
             pygame.display.flip()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.dialog_box.next_text()
             clock.tick(60)
 
         pygame.quit()

@@ -44,6 +44,11 @@ class MapManager:
 
         self.teleport_player("player")
 
+    def check_dialog(self,dialog_box):
+
+        for sprite in self.get_group().sprites():
+            if sprite.feet.collidelist(self.get_dialogs()) > -1:
+                self.dialog_box.render(self.screen)
     def check_collisions(self):
         # potrals
         for portal in self.get_map().portals:
@@ -57,9 +62,6 @@ class MapManager:
                     self.current_map = portal.target_map
                     self.teleport_player(copy_portal.teleport_point)
 
-        for sprite in self.get_group().sprites():
-            if sprite.feet.collidelist(self.get_dialogs()) > -1:
-                self.dialog_box.render(self.screen)
 
         # collisions
         for sprite in self.get_group().sprites():

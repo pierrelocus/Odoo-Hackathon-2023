@@ -11,7 +11,7 @@ class DialogBox:
         self.texts = ["haha", "heheh"]
         self.font = pygame.font.Font('./dialog/dialog_font.ttf',18)
         self.text_index = 0
-        self.reading = True
+        self.reading = False
 
 
     def render(self,screen):
@@ -22,6 +22,7 @@ class DialogBox:
 
 
     def next_text(self):
+        self.reading = True
         self.text_index += 1
         if self.text_index >= len(self.texts):
             self.reading = False
