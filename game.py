@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 
 from player import Player, PlayerStatus
 from dialogs import DialogBox
+from map import MapManager
 
 import json
 
@@ -45,22 +46,11 @@ class Game:
         self.running = True
         self.map = "world"
         self.last_move = False
-
         # Affichage de la fenêtre
         self.screen = pygame.display.set_mode((1920, 1080))
         pygame.display.set_caption("BasiqueGame")
-
-        # Charger la carte clasique
-        self.tmx_data = pytmx.util_pygame.load_pygame("map.tmx")
-        map_data = pyscroll.data.TiledMapData(self.tmx_data)
-        map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
-        map_layer.zoom = 3
-
-        # Générer le joeur
-        player_position = self.tmx_data.get_object_by_name('player')
-        self.player = Player(player_position.x,player_position.y)
-        self.dialog_box = DialogBox()
-
+        self.player = Player(50,50)
+        self.map_manager = MapManager(self.screen,self.player)
         # Définir le logo du jeu
         pygame.display.set_icon(self.player.get())
 
@@ -68,7 +58,7 @@ class Game:
         self.walls = []
         self.hints = []
         self.panels = []
-        
+
         for obj in self.tmx_data.objects:
             if obj.type == "collision":
                 self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
@@ -99,7 +89,7 @@ class Game:
         self.d_pressed = True
         self.e_pressed = True
         self.f_pressed = True
-        self.g_pressed = True   
+        self.g_pressed = True
         self.h_pressed = True
         self.i_pressed = True
         self.j_pressed = True
@@ -175,7 +165,7 @@ class Game:
             print("YA ZEBIH OMG")
             with open(self.json_file) as fjson:
                 listObj = json.load(fjson)
-            
+
             for obj in listObj:
                 print(obj)
             if self.current_user_input:
@@ -210,15 +200,7 @@ class Game:
                 setattr(self, chr(letter) + '_pressed', True)
 
     def update(self):
-        self.group.update()
-        # Vérification des collisions
-        for sprite in self.group.sprites():
-            if sprite.feet.collidelist(self.walls) > -1:
-                sprite.move_back()
-
-    def show_dialog_box(self, string, wooden_panel_type=False):
-        self.dialog_box = DialogBox(panel=wooden_panel_type, texts=[string], years=self.current_years_to_open_new_panel)
-        self.dialog_box.render(self.screen)
+        self.map_manager.update()
 
     def run(self):
         clock = pygame.time.Clock()
@@ -252,6 +234,7 @@ class Game:
                                 self.show_dialog_box(self.panel_texts[panel['name']], wooden_panel_type='read')
                             else:
                                 self.show_dialog_box(self.current_user_input, wooden_panel_type='new')
+            self.map_manager.draw()
             pygame.display.flip()
 
             for event in pygame.event.get():
