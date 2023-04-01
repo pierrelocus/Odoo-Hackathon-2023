@@ -117,7 +117,7 @@
   <object id="15" type="collision" x="1057.29" y="227.881" width="27.6778" height="346.895"/>
   <object id="17" type="collision" x="1152.32" y="232.494" width="27.6778" height="535.105"/>
   <object id="18" type="collision" x="128.241" y="640.28" width="189.132" height="28.6004"/>
-  <object id="19" name="player" x="92.2594" y="296.153">
+  <object id="19" name="player" x="98.9261" y="264.82">
    <point/>
   </object>
   <object id="20" type="collision" x="1076.67" y="113.479" width="28.6004" height="114.402"/>
@@ -129,17 +129,17 @@
   <object id="31" type="class" x="924.392" y="407.872" width="37.4032" height="22.2638"/>
   <object id="32" name="enter_house_3" x="1108.74" y="190.578" width="32.9504" height="38.2937"/>
   <object id="33" name="enter_house_1" x="85.4929" y="195.031" width="31.1693" height="34.7315"/>
-  <object id="34" name="exit_3" x="1120.31" y="271.618">
+  <object id="34" name="exit_3" x="1121.64" y="261.618">
    <point/>
   </object>
-  <object id="36" name="exit_2" x="352.658" y="674.147">
+  <object id="36" name="exit_2" x="353.991" y="648.147">
    <point/>
   </object>
   <object id="37" name="enter_house_2" x="344.643" y="576.187" width="27.6071" height="36.5126"/>
-  <object id="39" name="panel_one" type="panel" x="64.6924" y="543.452" width="28.415" height="31.1948"/>
-  <object id="40" name="new_panel_one" type="panel" x="64.7827" y="350.347" width="28.3926" height="32.9074"/>
-  <object id="41" name="new_panel_two" type="panel" x="64.7271" y="413.617" width="26.8914" height="33.3741"/>
-  <object id="42" name="new_panel_three" type="panel" x="65.1608" y="476.988" width="27.9588" height="34.1746"/>
+  <object id="39" name="panel_one" type="panel" x="64.6924" y="543.452" width="25.8351" height="31.1948"/>
+  <object id="40" name="new_panel_one" type="panel" x="64.7827" y="351.637" width="26.1352" height="31.6175"/>
+  <object id="41" name="new_panel_two" type="panel" x="64.7271" y="415.23" width="26.8914" height="31.7617"/>
+  <object id="42" name="new_panel_three" type="panel" x="65.1608" y="480.212" width="26.3464" height="30.9497"/>
  </objectgroup>
  <layer id="6" name="Tile Layer 4" width="40" height="30">
   <data encoding="csv">

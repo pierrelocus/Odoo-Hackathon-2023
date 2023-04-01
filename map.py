@@ -45,22 +45,17 @@ class MapManager:
     def check_collisions(self):
         # potrals
         for portal in self.get_map().portals:
-
             if portal.from_world == self.current_map:
                 point = self.get_object(portal.origin_point)
                 rect = pygame.Rect(point.x, point.y, point.width, point.height)
-
                 if self.player.feet.colliderect(rect):
                     copy_portal = portal
                     self.current_map = portal.target_map
                     self.teleport_player(copy_portal.teleport_point)
-
-
         # collisions
         for sprite in self.get_group().sprites():
             if sprite.feet.collidelist(self.get_walls()) > -1:
                 sprite.move_back()
-
 
     def teleport_player(self, name):
         point = self.get_object(name)
