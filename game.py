@@ -1,4 +1,5 @@
 import pygame
+import pygame.mixer
 import pytmx
 import pyscroll
 import datetime
@@ -48,6 +49,7 @@ class Game:
         self.running = True
         self.map = "world"
         self.last_move = False
+        pygame.mixer.music.load("Shire_oasis.mp3")
         # Affichage de la fenêtre
         self.screen = pygame.display.set_mode((1920, 1080))
         pygame.display.set_caption("BasiqueGame")
@@ -208,7 +210,7 @@ class Game:
         self.dialog_box.render(self.screen)
 
     def run(self):
-        # Clock
+        pygame.mixer.music.play()
         clock = pygame.time.Clock()
 
         # import moviepy.editor as meditor
