@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="24">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="33">
  <tileset firstgid="1" source="tiles.tsx"/>
  <tileset firstgid="145" source="terrain_tiles_v2.tsx"/>
  <tileset firstgid="305" source="fence_tiles.tsx"/>
+ <tileset firstgid="321" name="tiles" tilewidth="32" tileheight="32" tilecount="144" columns="12">
+  <image source="assets_spritesheet_v2_free.png" width="384" height="384"/>
+ </tileset>
+ <tileset firstgid="465" source="assets_spritesheet_v2_free.tsx"/>
+ <tileset firstgid="609" source="tiles.tsx"/>
+ <tileset firstgid="753" source="fence_tiles.tsx"/>
+ <tileset firstgid="769" source="terrain_tiles_v2.tsx"/>
  <layer id="1" name="Tile Layer 1" width="40" height="30">
   <data encoding="csv">
 200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,
@@ -94,8 +101,8 @@
 0,312,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,0,0,0,
 0,312,0,0,0,0,0,0,0,0,0,0,308,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,0,0,0,
 0,312,0,0,0,0,0,0,0,0,0,0,313,319,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,0,0,0,
-0,312,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,0,0,0,
-0,312,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,0,0,0,
+0,312,374,375,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,0,0,0,
+0,312,386,387,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,0,0,0,
 0,313,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,318,315,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -120,5 +127,6 @@
   <object id="20" type="collision" x="1076.67" y="113.479" width="28.6004" height="114.402"/>
   <object id="21" type="collision" x="1107.11" y="113.479" width="104.253" height="74.7301"/>
   <object id="23" type="collision" x="1144.94" y="190.977" width="63.659" height="37.8264"/>
+  <object id="32" type="panel" x="80.7276" y="684.311" width="22.8217" height="28.6123"/>
  </objectgroup>
 </map>
