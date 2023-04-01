@@ -134,6 +134,7 @@ class Game:
         file_data.close()
         self.current_years_to_open_new_panel = 5
         self.current_panel_writing = False
+        self.backspace_released = True
 
         # Porte de la maison
 
@@ -153,7 +154,8 @@ class Game:
                     else:
                         self.current_user_input += chr(letter)
                     print(self.current_user_input)
-        elif pressed[pygame.K_BACKSPACE]:
+        elif pressed[pygame.K_BACKSPACE] and self.backspace_released:
+            self.backspace_released = False
             self.current_user_input = self.current_user_input[:-1]
             print(self.current_user_input)
         elif pressed[pygame.K_UP]:
@@ -193,13 +195,16 @@ class Game:
             self.current_user_input = ""
             self.is_on_prompt = True
             self.enter_pressed = False
-        elif pressed[pygame.K_SPACE]:
-            if self.is_on_prompt:
+        if pressed[pygame.K_SPACE]:
+            if self.is_on_prompt and self.space_released:
+                self.space_released = False
                 self.current_user_input += chr(32)
         if not pressed[pygame.K_SPACE]:
             self.space_released = True
         if not pressed[pygame.K_RETURN]:
             self.enter_pressed = True
+        if not pressed[pygame.K_BACKSPACE]:
+            self.backspace_released = True
         for letter in alphabet:
             if not pressed[letter]:
                 setattr(self, chr(letter) + '_pressed', True)
@@ -232,7 +237,7 @@ class Game:
                     self.is_on_prompt = True
                     for panel in self.panels:
                         if sprite.feet.collidelist([panel['rect']]) > -1 and not ('new' in panel['name']):
-                            self.show_dialog_box('Oh here is the panel of \{firstname\}')
+                            self.show_dialog_box('Oh here is mom\'s panel !')
                             self.show_dialog = True
                             break
                 if self.show_dialog:
@@ -268,10 +273,11 @@ class Game:
                     print('Wooden panel ? %s' % self.is_display_wooden_panel)
                     if event.key == pygame.K_KP_PLUS:
                         if self.is_display_wooden_panel:
-                            self.current_years_to_open_new_panel += 5
+                            self.current_years_to_open_new_panel += 1
                     if event.key == pygame.K_KP_MINUS:
                         if self.is_display_wooden_panel:
-                            self.current_years_to_open_new_panel -= 5
+                            if self.current_years_to_open_new_panel > 1:
+                                self.current_years_to_open_new_panel -= 1
 
                     if event.unicode == "?":
                         self.current_user_input += "?"

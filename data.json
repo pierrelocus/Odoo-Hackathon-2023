@@ -38,5 +38,15 @@
         "y_pos": 443,
         "user": "Me",
         "themes": "IDK bro"
+    },
+    {
+        "story": "Hi, Future Maxime! This is your 10-year-old self writing to you. I hope this letter finds you well. First of all, I want to say how grateful I am for the gift you received on your 10th birthday. Do you remember that beautiful guitar our parents gave us? Well, I hope you kept playing it because I have always dreamed of becoming a musician. As a child, I spent every spare moment practicing on my guitar, and I learned how to play simple songs and even started writing my own music. I felt proud of myself and grateful for the wonderful gift our parents gave us. I hope that in the last 20 years, you continued to pursue your passion for music.",
+        "opening_date": "2022-12-12",
+        "type": "panel",
+        "x_pos": 1,
+        "y_pos": 443,
+        "user": "Me",
+        "themes": "IDK bro",
+        "panel_id": "panel_one"
     }
 ]
