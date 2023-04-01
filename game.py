@@ -182,8 +182,7 @@ class Game:
             if not pressed[letter]:
                 setattr(self, chr(letter) + '_pressed', True)
     def show_dialog_box(self, string, wooden_panel_type=False):
-        self.dialog_box = DialogBox(panel=wooden_panel_type, texts=[string], years=self.current_years_to_open_new_panel)
-        self.dialog_box.render(self.screen)
+        self.map_manager.show_dialog_box(panel=wooden_panel_type, texts=[string], years=self.current_years_to_open_new_panel)
 
     def update(self):
         self.map_manager.update()
@@ -205,7 +204,7 @@ class Game:
                     for panel in self.map_manager.get_map().panels:
                         if sprite.feet.collidelist([panel['rect']]) > -1 and not ('new' in panel['name']):
                             print('SHOULD SHOW DIALOG BOX')
-                            self.show_dialog_box('Oh here is mom\'s panel !')
+                            self.map_manager.get_map().show_dialog_box('Oh here is mom\'s panel !')
                             self.show_dialog = True
                             break
                 if self.show_dialog:

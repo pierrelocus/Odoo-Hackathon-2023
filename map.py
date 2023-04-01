@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+from dialogs import DialogBox
 import pygame, pytmx, pyscroll
+
 
 
 @dataclass
@@ -26,12 +28,13 @@ class MapManager:
         self.maps = dict()
         self.screen = screen
         self.player = player
+        self.dialog_box = DialogBox()
         self.current_map = "map"
 
         self.register_map("map", portals=[
             Portal(from_world="map", origin_point="enter_house_1", target_map="house_1", teleport_point="player"),
             Portal(from_world="map", origin_point="enter_house_2", target_map="house_2", teleport_point="player"),
-            Portal(from_world="map", origin_point="enter_house_3", target_map="house_3", teleport_point="player")])
+            Portal(from_world="map", origin_point="enter_house_3", target_map="house_3", teleport_point="player")],)
         self.register_map("house_1", portals=[
             Portal(from_world="house_1", origin_point="return", target_map="map", teleport_point="player"),
         ])
@@ -42,7 +45,14 @@ class MapManager:
 
         self.teleport_player("player")
 
+    def check_panel_collision(self, panel):
+        for sprite in self.get_group().sprites():
+            if sprite.feet.colliderect(self.player.rect) :
+                print("hhehe")
+
+
     def check_collisions(self):
+
         # potrals
         for portal in self.get_map().portals:
             if portal.from_world == self.current_map:
@@ -64,6 +74,10 @@ class MapManager:
         self.player.position[0] = point.x
         self.player.position[1] = point.y
         self.player.save_location()
+
+    def show_dialog_box(self, texts = "string", panel=False, years=5):
+        self.dialog_box = DialogBox(panel=panel, texts=[texts], years=years)
+        self.dialog_box.render(self.screen)
 
     def register_map(self, name, portals=[], panels=[]):
         tmx_data = pytmx.util_pygame.load_pygame(f"{name}.tmx")
