@@ -231,6 +231,16 @@ class Game:
                         if self.is_display_wooden_panel:
                             self.current_years_to_open_new_panel -= 5
 
+                    if event.unicode == "?":
+                        self.current_user_input += "?"
+                    elif event.unicode == "!":
+                        self.current_user_input += "!"
+                    elif event.unicode == ",":
+                        self.current_user_input += ","
+                    elif event.unicode == ".":
+                        self.current_user_input += "."
+                    elif event.unicode == "'":
+                        self.current_user_input += "'"
 
             clock.tick(60)
 
