@@ -1,6 +1,8 @@
 import pygame
 import pytmx
 import pyscroll
+import datetime
+from dateutil.relativedelta import relativedelta
 
 from player import Player, PlayerStatus
 from dialogs import DialogBox
@@ -91,6 +93,32 @@ class Game:
         self.current_user_input = ""
         self.json_file = "data.json"
         self.enter_pressed = True
+        self.a_pressed = True
+        self.b_pressed = True
+        self.c_pressed = True
+        self.d_pressed = True
+        self.e_pressed = True
+        self.f_pressed = True
+        self.g_pressed = True   
+        self.h_pressed = True
+        self.i_pressed = True
+        self.j_pressed = True
+        self.k_pressed = True
+        self.l_pressed = True
+        self.m_pressed = True
+        self.n_pressed = True
+        self.o_pressed = True
+        self.p_pressed = True
+        self.q_pressed = True
+        self.r_pressed = True
+        self.s_pressed = True
+        self.t_pressed = True
+        self.u_pressed = True
+        self.v_pressed = True
+        self.w_pressed = True
+        self.x_pressed = True
+        self.y_pressed = True
+        self.z_pressed = True
 
         file_data = open('data.json')
         self.all_text_data = json.load(file_data)
@@ -98,7 +126,10 @@ class Game:
         print('all text data : %s ' % self.all_text_data)
         for row in self.all_text_data:
             if 'type' in row and row['type'] == 'panel':
-                self.panel_texts[row['panel_id']] = row['story']
+                if 'opening_date' in row and row['opening_date'] > datetime.date.today().strftime('%Y-%m-%d'):
+                    self.panel_texts[row['panel_id']] = 'Open on %s' % row['opening_date']
+                else:
+                    self.panel_texts[row['panel_id']] = row['story']
         print(self.panel_texts)
         file_data.close()
         self.current_years_to_open_new_panel = 5
@@ -112,11 +143,11 @@ class Game:
 
         if pressed[pygame.K_ESCAPE]:
             self.running = False
-        if any([pressed[letter] for letter in alphabet]) and self.letter_key_released:
+        if any([pressed[letter] for letter in alphabet]):
             self.is_on_prompt = True
-            self.letter_key_released = False
             for letter in alphabet:
-                if pressed[letter]:
+                if pressed[letter] and getattr(self, chr(letter) + '_pressed'):
+                    setattr(self, chr(letter) + '_pressed', False)
                     if pressed[pygame.K_LSHIFT] or pressed[pygame.K_RSHIFT]:
                         self.current_user_input += chr(letter - 32)
                     else:
@@ -148,12 +179,12 @@ class Game:
             if self.current_user_input:
                 listObj.append({
                     "story": self.current_user_input,
-                    "opening_date": "2023-12-12",
+                    "opening_date": (datetime.date.today() + relativedelta(years=self.current_years_to_open_new_panel)).strftime('%Y-%m-%d'),
                     "x_pos": 1,
                     "y_pos": 443,
                     "user": "Me",
                     'panel_id': self.current_panel_writing['name'],
-                    "themes": "IDK bro",
+                    "themes": "",
                     "type": "panel",
                 })
             with open(self.json_file, 'w') as jsfile:
@@ -167,10 +198,11 @@ class Game:
                 self.current_user_input += chr(32)
         if not pressed[pygame.K_SPACE]:
             self.space_released = True
-        if all([not pressed[letter] for letter in alphabet]):
-            self.letter_key_released = True
         if not pressed[pygame.K_RETURN]:
             self.enter_pressed = True
+        for letter in alphabet:
+            if not pressed[letter]:
+                setattr(self, chr(letter) + '_pressed', True)
 
     def update(self):
         self.group.update()
