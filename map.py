@@ -13,10 +13,10 @@ class Portal:
 @dataclass
 class Map:
     name: str
-    walls: list()
+    walls: list[pygame.Rect]
     group: pyscroll.PyscrollGroup
     tmx_data: pytmx.TiledMap
-    portals: list()
+    portals: []
 
 
 class MapManager:
