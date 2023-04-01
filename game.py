@@ -181,6 +181,8 @@ class Game:
         for letter in alphabet:
             if not pressed[letter]:
                 setattr(self, chr(letter) + '_pressed', True)
+        if pressed[pygame.K_ESCAPE]:
+            self.running = False
 
     def update(self):
         self.map_manager.update()
