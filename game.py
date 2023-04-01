@@ -135,7 +135,7 @@ class Game:
         elif pressed[pygame.K_LEFT]:
             self.player.move_player("left")
             self.last_move = 'LEFT'
-        elif pressed[pygame.K_RETURN] and self.enter_pressed:
+        elif pressed[pygame.K_RETURN] and self.enter_pressed and self.current_user_input:
             listObj = []
             print("YA ZEBIH OMG")
             with open(self.json_file) as fjson:
@@ -143,7 +143,6 @@ class Game:
             
             for obj in listObj:
                 print(obj)
-            if self.current_user_input:
                 listObj.append({
                     "story": self.current_user_input,
                     "opening_date": "2023-12-12",
