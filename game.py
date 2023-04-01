@@ -140,18 +140,20 @@ class Game:
             print("YA ZEBIH OMG")
             with open(self.json_file) as fjson:
                 listObj = json.load(fjson)
-                print(listObj)
-            listObj.append({
-                "story": self.current_user_input,
-                "opening_date": "2023-12-12",
-                "x_pos": 1,
-                "y_pos": 443,
-                "user": "Me",
-                "themes": "IDK bro"
-            })
+            
+            for obj in listObj:
+                print(obj)
+            if self.current_user_input:
+                listObj.append({
+                    "story": self.current_user_input,
+                    "opening_date": "2023-12-12",
+                    "x_pos": 1,
+                    "y_pos": 443,
+                    "user": "Me",
+                    "themes": "IDK bro"
+                })
             with open(self.json_file, 'w') as jsfile:
                 json.dump(listObj, jsfile, indent=4, separators=(',',': '))
-                print(listObj)
 
             self.current_user_input = ""
             self.is_on_prompt = True
