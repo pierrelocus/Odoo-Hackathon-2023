@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="20">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="24">
  <tileset firstgid="1" source="../../tiles.tsx"/>
  <tileset firstgid="145" source="../../terrain_tiles_v2.tsx"/>
  <tileset firstgid="305" source="../../fence_tiles.tsx"/>
@@ -117,5 +117,8 @@
   <object id="19" type="player" x="92.2594" y="296.153">
    <point/>
   </object>
+  <object id="20" type="collision" x="1076.67" y="113.479" width="28.6004" height="114.402"/>
+  <object id="21" type="collision" x="1107.11" y="113.479" width="104.253" height="74.7301"/>
+  <object id="23" type="collision" x="1144.94" y="190.977" width="63.659" height="37.8264"/>
  </objectgroup>
 </map>
