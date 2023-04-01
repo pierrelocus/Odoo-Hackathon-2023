@@ -59,7 +59,7 @@ class Game:
         # Générer le joeur
         player_position = self.tmx_data.get_object_by_name('player')
         self.player = Player(player_position.x,player_position.y)
-        self.dialog_box = DialogBox()
+        self.dialog_box = False
 
         # Définir le logo du jeu
         pygame.display.set_icon(self.player.get())
@@ -191,7 +191,18 @@ class Game:
                 })
             with open(self.json_file, 'w') as jsfile:
                 json.dump(listObj, jsfile, indent=4, separators=(',',': '))
-
+            file_data = open('data.json')
+            self.all_text_data = json.load(file_data)
+            self.panel_texts = {}
+            print('all text data : %s ' % self.all_text_data)
+            for row in self.all_text_data:
+                if 'type' in row and row['type'] == 'panel':
+                    if 'opening_date' in row and row['opening_date'] > datetime.date.today().strftime('%Y-%m-%d'):
+                        self.panel_texts[row['panel_id']] = 'Open on %s' % row['opening_date']
+                    else:
+                        self.panel_texts[row['panel_id']] = row['story']
+            print(self.panel_texts)
+            file_data.close()
             self.current_user_input = ""
             self.is_on_prompt = True
             self.enter_pressed = False
@@ -217,7 +228,7 @@ class Game:
                 sprite.move_back()
 
     def show_dialog_box(self, string, wooden_panel_type=False):
-        self.dialog_box = DialogBox(panel=wooden_panel_type, texts=[string], years=self.current_years_to_open_new_panel)
+        self.dialog_box = DialogBox(panel=wooden_panel_type, texts=[string], years=self.current_years_to_open_new_panel, player=self.player)
         self.dialog_box.render(self.screen)
 
     def run(self):
@@ -237,7 +248,7 @@ class Game:
                     self.is_on_prompt = True
                     for panel in self.panels:
                         if sprite.feet.collidelist([panel['rect']]) > -1 and not ('new' in panel['name']):
-                            self.show_dialog_box('Oh here is mom\'s panel !')
+                            self.show_dialog_box('Oh here is Maxime\'s panel !')
                             self.show_dialog = True
                             break
                 if self.show_dialog:

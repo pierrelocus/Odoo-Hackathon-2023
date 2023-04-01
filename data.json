@@ -48,5 +48,15 @@
         "user": "Me",
         "themes": "IDK bro",
         "panel_id": "panel_one"
+    },
+    {
+        "story": "Hello dear me, I chose to explain you that today you were heartbroken, but I'm sure it's gonna be OK and today you are with a pretty girlfriend !",
+        "opening_date": "2028-04-01",
+        "x_pos": 1,
+        "y_pos": 443,
+        "user": "Me",
+        "panel_id": "new_panel_one",
+        "themes": "",
+        "type": "panel"
     }
 ]

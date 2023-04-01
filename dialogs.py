@@ -3,16 +3,16 @@ import pygame
 
 class DialogBox:
 
-    def __init__(self, panel=False, texts=[], years=False):
+    def __init__(self, panel=False, texts=[], years=False, player=False):
         if texts:
             self.texts = texts
         if not panel:
             self.box = pygame.image.load('./dialog/dialogs_box.png')
             self.box = pygame.transform.scale(self.box, (550, 50))
-            self.x_position = 600
-            self.y_position = 600
-            self.x_text_position = 630
-            self.y_text_position = 615
+            self.x_position = player.position[0]
+            self.y_position = player.position[1]
+            self.x_text_position = player.position[0] + 50
+            self.y_text_position = player.position[1] + 15
             self.font = pygame.font.Font('./dialog/dialog_font.ttf',18)
             self.color = (0, 0, 0)
         else:
