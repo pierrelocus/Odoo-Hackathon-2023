@@ -1,6 +1,7 @@
 import pygame
 import pytmx
 import pyscroll
+import json
 
 from player import Player
 alphabet = [
@@ -77,7 +78,10 @@ class Game:
         self.text_index = -1
         self.dialog_box = pygame.Rect(10, 10, 500, 200)
         self.letter_key_released = True
+        self.is_on_prompt = False
         self.current_user_input = ""
+        self.json_file = "data.json"
+        self.enter_pressed = True
 
         # Porte de la maison
 
@@ -88,6 +92,7 @@ class Game:
         if pressed[pygame.K_ESCAPE]:
             self.running = False
         if any([pressed[letter] for letter in alphabet]) and self.letter_key_released:
+            self.is_on_prompt = True
             self.letter_key_released = False
             for letter in alphabet:
                 if pressed[letter]:
@@ -111,12 +116,38 @@ class Game:
         elif pressed[pygame.K_LEFT]:
             self.player.move_player("left")
             self.last_move = 'LEFT'
+        elif pressed[pygame.K_RETURN] and self.enter_pressed:
+            listObj = []
+            print("YA ZEBIH OMG")
+            with open(self.json_file) as fjson:
+                listObj = json.load(fjson)
+                print(listObj)
+            listObj.append({
+                "story": self.current_user_input,
+                "opening_date": "2023-12-12",
+                "x_pos": 1,
+                "y_pos": 443,
+                "user": "Me",
+                "themes": "IDK bro"
+            })
+            with open(self.json_file, 'w') as jsfile:
+                json.dump(listObj, jsfile, indent=4, separators=(',',': '))
+                print(listObj)
+
+            self.current_user_input = ""
+            self.is_on_prompt = True
+            self.enter_pressed = False
         elif pressed[pygame.K_SPACE]:
-            self.manage_action()
-        if not pressed[pygame.K_SPACE]:
+            if self.is_on_prompt:
+                self.current_user_input += chr(32)
+            else:
+                self.manage_action()
+        if not pressed[pygame.K_SPACE] or not pressed[pygame.K_RETURN]:
             self.space_released = True
         if all([not pressed[letter] for letter in alphabet]):
             self.letter_key_released = True
+        if not pressed[pygame.K_RETURN]:
+            self.enter_pressed = True
 
     def manage_action(self):
         if self.space_released:
