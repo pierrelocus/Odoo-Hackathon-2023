@@ -3,6 +3,7 @@ import pytmx
 import pyscroll
 
 from player import Player
+from dialogs import DialogBox
 
 
 class Game:
@@ -23,21 +24,25 @@ class Game:
         map_layer.zoom = 3
 
         # Générer le joeur
-        #player_position = tmx_data.get_object_by_name('player')
-        self.player = Player(15, 15)
+        player_position = tmx_data.get_object_by_name('player')
+        self.player = Player(player_position.x,player_position.y)
+        self.dialog_box = DialogBox()
 
         # Définir le logo du jeu
         pygame.display.set_icon(self.player.get())
 
         # Les collisions
         self.walls = []
-
+        self.hints = []
         for obj in tmx_data.objects:
             if obj.type == "collision":
                 self.walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+        for obj in tmx_data.objects:
+            if obj.type == "hint":
+                self.hints.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
 
         # Dessiner les différents calques
-        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=5)
+        self.group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=3)
         self.group.add(self.player)
 
         # Porte de la maison
@@ -64,6 +69,9 @@ class Game:
         for sprite in self.group.sprites():
             if sprite.feet.collidelist(self.walls) > -1:
                 sprite.move_back()
+        for sprite in self.group.sprites():
+            if sprite.feet.collidelist(self.hints) > -1:
+                self.dialog_box = DialogBox()
 
     def run(self):
         clock = pygame.time.Clock()
@@ -76,11 +84,15 @@ class Game:
             self.update()
             self.group.center(self.player.rect.center)
             self.group.draw(self.screen)
+            self.dialog_box.render(self.screen)
             pygame.display.flip()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                elif event.type == pygame.KEYDOWN:
+
+                    self.dialog_box.next_text()
 
             clock.tick(60)
 
