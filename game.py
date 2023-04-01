@@ -56,6 +56,14 @@ class Game:
         # Définir le logo du jeu
         pygame.display.set_icon(self.player.get())
         self.tmx_data = pytmx.util_pygame.load_pygame("map.tmx")        
+        self.tmx_data = pytmx.util_pygame.load_pygame("map.tmx")
+        self.panels = []
+
+
+        for obj in self.tmx_data.objects:
+            if obj.type == 'panel':
+                self.panels.append({'name': obj.name, 'rect': pygame.Rect(obj.x, obj.y, obj.width, obj.height)})
+        
         self.space_released = True
         self.is_on_prompt = False
         self.is_display_wooden_panel = False
@@ -192,9 +200,13 @@ class Game:
         self.dialog_box.render(self.screen)
 
     def run(self):
+        # Clock
         clock = pygame.time.Clock()
 
-        # Clock
+        import moviepy.editor as meditor
+        clip = meditor.VideoFileClip('POKEMON_START.mp4')
+        clip.preview()
+
         while self.running:
 
             self.player.save_location()
