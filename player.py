@@ -1,9 +1,15 @@
 import pygame
+from enum import Enum
+
+class PlayerStatus(Enum):
+    FREE = 1
+    LOCK = 2
 
 class Player(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
+        self.status = PlayerStatus.FREE
         self.sprite_sheet = pygame.image.load("player.png")
         self.image = self.get_image(0, 0)
         self.image.set_colorkey([0, 0, 0])
@@ -27,6 +33,8 @@ class Player(pygame.sprite.Sprite):
     def save_location(self): self.old_position = self.position.copy()
 
     def move_player(self, type):
+        if self.status == PlayerStatus.LOCK:
+            return
         self.image = self.images[type]
         self.image.set_colorkey([0, 0, 0])
         if type == "up":

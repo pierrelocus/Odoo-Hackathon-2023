@@ -2,7 +2,7 @@ import pygame
 import pytmx
 import pyscroll
 
-from player import Player
+from player import Player, PlayerStatus
 from dialogs import DialogBox
 
 import json
@@ -200,6 +200,7 @@ class Game:
                 if self.show_dialog:
                     break
             if self.is_display_wooden_panel:
+                self.player.status = PlayerStatus.LOCK
                 for sprite in self.group.sprites():
                     for panel in self.panels:
                         if sprite.feet.collidelist([panel['rect']]) > -1:
@@ -211,6 +212,7 @@ class Game:
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    self.player.status = PlayerStatus.FREE
                     self.running = False
                 if event.type == pygame.KEYDOWN:
                     print('GOT KEY DOWN')
@@ -218,6 +220,7 @@ class Game:
                         print('display wooden panel : %s , is on prompt : %s' % (self.is_display_wooden_panel, self.is_on_prompt))
                         if self.is_display_wooden_panel:
                             self.is_display_wooden_panel = False
+                            self.player.status = PlayerStatus.FREE
                             self.is_on_prompt = False
                         if self.is_on_prompt:
                             self.current_user_input = ""
