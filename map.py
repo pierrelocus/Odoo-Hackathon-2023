@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from dialogs import DialogBox
 import pygame, pytmx, pyscroll
 
 
@@ -16,8 +17,8 @@ class Map:
     walls: list[pygame.Rect]
     group: pyscroll.PyscrollGroup
     tmx_data: pytmx.TiledMap
-    dialogs: list[pygame.Rect]
     portals: []
+    dialogs: list[pygame.Rect]
 
 
 class MapManager:
@@ -27,6 +28,7 @@ class MapManager:
         self.screen = screen
         self.player = player
         self.current_map = "map"
+        self.dialog_box = DialogBox()
 
         self.register_map("map", portals=[
             Portal(from_world="map", origin_point="enter_house_1", target_map="house_1", teleport_point="player"),
@@ -45,6 +47,7 @@ class MapManager:
     def check_collisions(self):
         # potrals
         for portal in self.get_map().portals:
+
             if portal.from_world == self.current_map:
                 point = self.get_object(portal.origin_point)
                 rect = pygame.Rect(point.x, point.y, point.width, point.height)
@@ -54,13 +57,15 @@ class MapManager:
                     self.current_map = portal.target_map
                     self.teleport_player(copy_portal.teleport_point)
 
+        for sprite in self.get_group().sprites():
+            if sprite.feet.collidelist(self.get_dialogs()) > -1:
+                self.dialog_box.render(self.screen)
 
         # collisions
         for sprite in self.get_group().sprites():
             if sprite.feet.collidelist(self.get_walls()) > -1:
                 sprite.move_back()
-            elif sprite.feet.collidelist(self.get_dialogs()) > -1:
-                sprite.move_back()
+
 
     def teleport_player(self, name):
         point = self.get_object(name)
@@ -104,7 +109,7 @@ class MapManager:
     def get_dialogs(self):
         return self.get_map().dialogs
 
-    def get_walls(self):
+    def get_dialogs(self):
         return self.get_map().dialogs
 
     def get_object(self, name):
