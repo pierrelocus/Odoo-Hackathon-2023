@@ -1,0 +1,41 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Hackaton/Odoo-Hackathon-2023/hacakton.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "Hackaton/Odoo-Hackathon-2023/hacakton.tmx": {
+            "scale": 2.8325,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 209.88526037069727,
+                "y": 112.97440423654018
+            }
+        },
+        "ok.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "/Users/sla/Downloads",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 12,
+    "map.tileWidth": 12,
+    "openFiles": [
+        "Hackaton/Odoo-Hackathon-2023/hacakton.tmx",
+        "ok.tsx"
+    ],
+    "project": "time.tiled-project",
+    "recentFiles": [
+        "ok.tsx",
+        "Hackaton/Odoo-Hackathon-2023/hacakton.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 12,
+        "width": 12
+    }
+}

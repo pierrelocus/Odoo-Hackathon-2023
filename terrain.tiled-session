@@ -1,0 +1,23 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+    },
+    "last.externalTilesetPath": "/Users/sla/Downloads/basic_tileset_and_assets_standard",
+    "last.imagePath": "/Users/sla/Downloads/basic_tileset_and_assets_standard",
+    "map.height": 30,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 40,
+    "openFiles": [
+    ],
+    "project": "terrain.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFilter": "All Files (*)",
+    "tileset.lastUsedFormat": "tsx"
+}
