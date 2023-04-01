@@ -75,8 +75,8 @@ class MapManager:
         self.player.position[1] = point.y
         self.player.save_location()
 
-    def show_dialog_box(self, texts = "string", panel=False, years=5):
-        self.dialog_box = DialogBox(panel=panel, texts=[texts], years=years)
+    def show_dialog_box(self, texts="string", panel=False, years=5):
+        self.dialog_box = DialogBox(panel=panel, texts=texts, years=years)
         self.dialog_box.render(self.screen)
 
     def register_map(self, name, portals=[], panels=[]):
