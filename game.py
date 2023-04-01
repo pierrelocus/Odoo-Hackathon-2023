@@ -95,12 +95,14 @@ class Game:
         file_data = open('data.json')
         self.all_text_data = json.load(file_data)
         self.panel_texts = {}
+        print('all text data : %s ' % self.all_text_data)
         for row in self.all_text_data:
             if 'type' in row and row['type'] == 'panel':
                 self.panel_texts[row['panel_id']] = row['story']
         print(self.panel_texts)
         file_data.close()
         self.current_years_to_open_new_panel = 5
+        self.current_panel_writing = False
 
         # Porte de la maison
 
@@ -135,7 +137,7 @@ class Game:
         elif pressed[pygame.K_LEFT]:
             self.player.move_player("left")
             self.last_move = 'LEFT'
-        elif pressed[pygame.K_RETURN] and self.enter_pressed and self.current_user_input:
+        elif pressed[pygame.K_RETURN] and self.enter_pressed:
             listObj = []
             print("YA ZEBIH OMG")
             with open(self.json_file) as fjson:
@@ -143,13 +145,16 @@ class Game:
             
             for obj in listObj:
                 print(obj)
+            if self.current_user_input:
                 listObj.append({
                     "story": self.current_user_input,
                     "opening_date": "2023-12-12",
                     "x_pos": 1,
                     "y_pos": 443,
                     "user": "Me",
-                    "themes": "IDK bro"
+                    'panel_id': self.current_panel_writing['name'],
+                    "themes": "IDK bro",
+                    "type": "panel",
                 })
             with open(self.json_file, 'w') as jsfile:
                 json.dump(listObj, jsfile, indent=4, separators=(',',': '))
@@ -205,7 +210,8 @@ class Game:
                 for sprite in self.group.sprites():
                     for panel in self.panels:
                         if sprite.feet.collidelist([panel['rect']]) > -1:
-                            if not 'new' in panel['name']:
+                            self.current_panel_writing = panel
+                            if not 'new' in panel['name'] or ('new' in panel['name'] and panel['name'] in self.panel_texts.keys()):
                                 self.show_dialog_box(self.panel_texts[panel['name']], wooden_panel_type='read')
                             else:
                                 self.show_dialog_box(self.current_user_input, wooden_panel_type='new')
