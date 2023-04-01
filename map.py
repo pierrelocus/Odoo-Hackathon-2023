@@ -17,7 +17,6 @@ class Map:
     group: pyscroll.PyscrollGroup
     tmx_data: pytmx.TiledMap
     portals: []
-    dialogs: list[pygame.Rect]
 
 
 class MapManager:
@@ -27,6 +26,7 @@ class MapManager:
         self.screen = screen
         self.player = player
         self.current_map = "map"
+        self.panels = []
 
         self.register_map("map", portals=[
             Portal(from_world="map", origin_point="enter_house_1", target_map="house_1", teleport_point="player"),
@@ -42,11 +42,6 @@ class MapManager:
 
         self.teleport_player("player")
 
-    def check_dialog(self,dialog_box):
-
-        for sprite in self.get_group().sprites():
-            if sprite.feet.collidelist(self.get_dialogs()) > -1:
-                self.dialog_box.render(self.screen)
     def check_collisions(self):
         # potrals
         for portal in self.get_map().portals:
@@ -81,21 +76,19 @@ class MapManager:
 
         # Les collisions
         walls = []
-        dialogs = []
 
         for obj in tmx_data.objects:
             if obj.type == "collision":
                 walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-            if obj.type == "dialog":
-                dialogs.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
-
+            if obj.type == 'panel':
+                self.panels.append({'name': obj.name, 'rect': pygame.Rect(obj.x, obj.y, obj.width, obj.height)})
 
         # Dessiner les différents calques
         group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=5)
         group.add(self.player)
 
         # map
-        self.maps[name] = Map(name, walls, group, tmx_data, portals, dialogs)
+        self.maps[name] = Map(name, walls, group, tmx_data, portals)
 
     def get_map(self):
         return self.maps[self.current_map]
@@ -105,12 +98,6 @@ class MapManager:
 
     def get_walls(self):
         return self.get_map().walls
-
-    def get_dialogs(self):
-        return self.get_map().dialogs
-
-    def get_dialogs(self):
-        return self.get_map().dialogs
 
     def get_object(self, name):
         return self.get_map().tmx_data.get_object_by_name(name)
@@ -122,3 +109,6 @@ class MapManager:
     def update(self):
         self.get_group().update()
         self.check_collisions()
+
+    def get_panels(self):
+        return self.panels

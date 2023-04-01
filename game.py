@@ -55,13 +55,7 @@ class Game:
         self.dialog_box = False
         # Définir le logo du jeu
         pygame.display.set_icon(self.player.get())
-        self.tmx_data = pytmx.util_pygame.load_pygame("map.tmx")
-        self.panels = []
-        
-        for obj in self.tmx_data.objects:
-            if obj.type == 'panel':
-                self.panels.append({'name': obj.name, 'rect': pygame.Rect(obj.x, obj.y, obj.width, obj.height)})
-        
+        self.tmx_data = pytmx.util_pygame.load_pygame("map.tmx")        
         self.space_released = True
         self.is_on_prompt = False
         self.is_display_wooden_panel = False
@@ -206,9 +200,10 @@ class Game:
             self.update()
             self.map_manager.draw()
             for sprite in self.map_manager.get_group().sprites():
-                if sprite.feet.collidelist([panel['rect'] for panel in self.panels]) > -1:
+                if sprite.feet.collidelist([panel['rect'] for panel in self.map_manager.get_panels()]) > -1:
+                    print('Im on a prompt')
                     self.is_on_prompt = True
-                    for panel in self.panels:
+                    for panel in self.map_manager.get_panels():
                         if sprite.feet.collidelist([panel['rect']]) > -1 and not ('new' in panel['name']):
                             self.show_dialog_box('Oh here is Maxime\'s panel !')
                             self.show_dialog = True
@@ -217,7 +212,7 @@ class Game:
                     break
             if self.is_display_wooden_panel:
                 for sprite in self.map_manager.get_group().sprites():
-                    for panel in self.panels:
+                    for panel in self.map_manager.get_panels():
                         if sprite.feet.collidelist([panel['rect']]) > -1:
                             self.current_panel_writing = panel
                             if not 'new' in panel['name'] or ('new' in panel['name'] and panel['name'] in self.panel_texts.keys()):
