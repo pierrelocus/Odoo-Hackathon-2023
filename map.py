@@ -16,6 +16,7 @@ class Map:
     walls: list[pygame.Rect]
     group: pyscroll.PyscrollGroup
     tmx_data: pytmx.TiledMap
+    dialogs: list[pygame.Rect]
     portals: []
 
 
@@ -53,9 +54,12 @@ class MapManager:
                     self.current_map = portal.target_map
                     self.teleport_player(copy_portal.teleport_point)
 
+
         # collisions
         for sprite in self.get_group().sprites():
             if sprite.feet.collidelist(self.get_walls()) > -1:
+                sprite.move_back()
+            elif sprite.feet.collidelist(self.get_dialogs()) > -1:
                 sprite.move_back()
 
     def teleport_player(self, name):
@@ -72,17 +76,21 @@ class MapManager:
 
         # Les collisions
         walls = []
+        dialogs = []
 
         for obj in tmx_data.objects:
             if obj.type == "collision":
                 walls.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+            if obj.type == "dialog":
+                dialogs.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+
 
         # Dessiner les différents calques
         group = pyscroll.PyscrollGroup(map_layer=map_layer, default_layer=5)
         group.add(self.player)
 
         # map
-        self.maps[name] = Map(name, walls, group, tmx_data, portals)
+        self.maps[name] = Map(name, walls, group, tmx_data, portals, dialogs)
 
     def get_map(self):
         return self.maps[self.current_map]
@@ -92,6 +100,12 @@ class MapManager:
 
     def get_walls(self):
         return self.get_map().walls
+
+    def get_dialogs(self):
+        return self.get_map().dialogs
+
+    def get_walls(self):
+        return self.get_map().dialogs
 
     def get_object(self, name):
         return self.get_map().tmx_data.get_object_by_name(name)
