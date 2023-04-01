@@ -206,7 +206,7 @@ class Game:
                     print('Im on a prompt')
                     self.is_on_prompt = True
                     for panel in self.map_manager.get_panels():
-                        if sprite.feet.collidelist([panel['rect']]) > -1 and not ('new' in panel['name']):
+                        if sprite.feet.collidelist([panel['rect']]) > -1:
                             self.show_dialog_box('Oh here is Maxime\'s panel !')
                             self.show_dialog = True
                             break

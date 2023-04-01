@@ -5,7 +5,7 @@
         "type": "panel",
         "x_pos": 1,
         "y_pos": 443,
-        "user": "Me",
+        "user": "Maxime",
         "themes": "IDK bro",
         "panel_id": "panel_one"
     },
@@ -14,7 +14,7 @@
         "opening_date": "2028-04-01",
         "x_pos": 1,
         "y_pos": 443,
-        "user": "Me",
+        "user": "Moi",
         "panel_id": "new_panel_one",
         "themes": "",
         "type": "panel"
@@ -24,8 +24,28 @@
         "opening_date": "2033-04-01",
         "x_pos": 1,
         "y_pos": 443,
-        "user": "Me",
+        "user": "Maman",
         "panel_id": "new_panel_two",
+        "themes": "",
+        "type": "panel"
+    },
+    {
+        "story": "Heyy ajd j'ai pleure pcq j'ai perdu le hackathon ...",
+        "opening_date": "2033-04-01",
+        "x_pos": 1,
+        "y_pos": 443,
+        "user": "Papa",
+        "panel_id": "new_panel_three",
+        "themes": "",
+        "type": "panel"
+    },
+    {
+        "story": "Hihhi petit souvenir tu te souveins de l'autre PUTE LA TU L'A S BIEN BAISEE HEIN LA CONNE",
+        "opening_date": "2048-04-01",
+        "x_pos": 1,
+        "y_pos": 443,
+        "user": "Me",
+        "panel_id": "new_panel_four",
         "themes": "",
         "type": "panel"
     }
