@@ -31,7 +31,10 @@ class MapManager:
         self.register_map("map", portals=[
             Portal(from_world="map", origin_point="enter_house_1", target_map="house_1", teleport_point="player"),
             Portal(from_world="map", origin_point="enter_house_2", target_map="house_2", teleport_point="player"),
-            Portal(from_world="map", origin_point="enter_house_3", target_map="house_3", teleport_point="player")])
+            Portal(from_world="map", origin_point="enter_house_3", target_map="house_3", teleport_point="player"),
+            Portal(from_world="map", origin_point="enter_ice", target_map="iceland", teleport_point="player"),
+            Portal(from_world="map", origin_point="hole", target_map="map", teleport_point="spawn_player")
+        ])
         self.register_map("house_1", portals=[
             Portal(from_world="house_1", origin_point="return", target_map="map", teleport_point="player"),
         ])
@@ -39,8 +42,10 @@ class MapManager:
             Portal(from_world="house_2", origin_point="return", target_map="map", teleport_point="exit_2"), ])
         self.register_map("house_3", portals=[
             Portal(from_world="house_3", origin_point="return", target_map="map", teleport_point="exit_3"), ])
+        self.register_map("iceland", portals=[
+            Portal(from_world="iceland", origin_point="return", target_map="map", teleport_point="exit_ice"), ])
 
-        self.teleport_player("player")
+        self.teleport_player("spawn_player")
 
     def check_collisions(self):
         # potrals
