@@ -17,11 +17,12 @@ class Map:
     group: pyscroll.PyscrollGroup
     tmx_data: pytmx.TiledMap
     portals: []
+    map_layer: False
 
 
 class MapManager:
 
-    def __init__(self, screen, player):
+    def __init__(self, screen, player, panels=False):
         self.maps = dict()
         self.screen = screen
         self.player = player
@@ -31,7 +32,7 @@ class MapManager:
         self.register_map("map", portals=[
             Portal(from_world="map", origin_point="enter_house_1", target_map="house_1", teleport_point="player"),
             Portal(from_world="map", origin_point="enter_house_2", target_map="house_2", teleport_point="player"),
-            Portal(from_world="map", origin_point="enter_house_3", target_map="house_3", teleport_point="player")])
+            Portal(from_world="map", origin_point="enter_house_3", target_map="house_3", teleport_point="player")], panels=panels)
         self.register_map("house_1", portals=[
             Portal(from_world="house_1", origin_point="return", target_map="map", teleport_point="player"),
         ])
@@ -63,8 +64,25 @@ class MapManager:
         self.player.position[1] = point.y
         self.player.save_location()
 
-    def register_map(self, name, portals=[]):
+    def redraw_map(self, panels=False):
+        self.register_map("map", portals=[
+            Portal(from_world="map", origin_point="enter_house_1", target_map="house_1", teleport_point="player"),
+            Portal(from_world="map", origin_point="enter_house_2", target_map="house_2", teleport_point="player"),
+            Portal(from_world="map", origin_point="enter_house_3", target_map="house_3", teleport_point="player")], panels=panels)
+
+    def register_map(self, name, portals=[], panels={}):
         tmx_data = pytmx.util_pygame.load_pygame(f"{name}.tmx")
+        if panels:
+            tile_gid = tmx_data.get_tile_gid(2, 11, 1)
+            print(tmx_data.layers[1].data)
+            print('TILE GID :')
+            print(tile_gid)
+            for panel in panels.values():
+                print('PANEL :')
+                print(panel)
+                x, y = panel
+                tmx_data.layers[1].data[int(x//60)][int(y//60)] = tile_gid
+        print('GOT NEW MAP, GIVING TO TILED MAP DATA')
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.orthographic.BufferedRenderer(map_data, self.screen.get_size())
         map_layer.zoom = 2
@@ -83,7 +101,7 @@ class MapManager:
         group.add(self.player)
 
         # map
-        self.maps[name] = Map(name, walls, group, tmx_data, portals)
+        self.maps[name] = Map(name, walls, group, tmx_data, portals, map_layer)
 
     def get_map(self):
         return self.maps[self.current_map]
@@ -97,7 +115,7 @@ class MapManager:
     def get_object(self, name):
         return self.get_map().tmx_data.get_object_by_name(name)
 
-    def draw(self):
+    def draw(self, nocenter=False):
         self.get_group().draw(self.screen)
         self.get_group().center(self.player.rect.center)
 
@@ -107,3 +125,8 @@ class MapManager:
 
     def get_panels(self):
         return self.panels
+    
+    def add_panel(self, panel):
+        if any([panel['name'] == x['name'] for x in self.get_panels()]):
+            return
+        self.panels.append(panel)

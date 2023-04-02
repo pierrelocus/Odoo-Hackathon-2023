@@ -3,6 +3,7 @@ import pytmx
 import pyscroll
 import datetime
 from dateutil.relativedelta import relativedelta
+import uuid
 
 from player import Player
 from dialogs import DialogBox
@@ -51,15 +52,11 @@ class Game:
         self.screen = pygame.display.set_mode((1920, 1080))
         pygame.display.set_caption("BasiqueGame")
         self.player = Player(50,50)
-        self.map_manager = MapManager(self.screen,self.player)
         self.dialog_box = False
         # Définir le logo du jeu
         pygame.display.set_icon(self.player.get())
-        self.tmx_data = pytmx.util_pygame.load_pygame("map.tmx")        
         self.tmx_data = pytmx.util_pygame.load_pygame("map.tmx")
         self.panels = []
-
-
         for obj in self.tmx_data.objects:
             if obj.type == 'panel':
                 self.panels.append({'name': obj.name, 'rect': pygame.Rect(obj.x, obj.y, obj.width, obj.height)})
@@ -101,18 +98,28 @@ class Game:
         file_data = open('data.json')
         self.all_text_data = json.load(file_data)
         self.panel_texts = {}
-        print('all text data : %s ' % self.all_text_data)
+        self.game_panels = {}
+        self.current_session_game_panels = {}
+
         for row in self.all_text_data:
+            if 'type' in row and row['type'] == 'game_panel':
+                self.game_panels[row['panel_id']] = (row['x_pos'], row['y_pos'])
+                self.panels.append({'name': row['panel_id'], 'rect': pygame.Rect(row['x_pos'], row['y_pos'], 28, 33)})
             if 'type' in row and row['type'] == 'panel':
                 if 'opening_date' in row and row['opening_date'] > datetime.date.today().strftime('%Y-%m-%d'):
                     self.panel_texts[row['panel_id']] = 'Open on %s' % row['opening_date']
                 else:
                     self.panel_texts[row['panel_id']] = row['story']
-        print(self.panel_texts)
+    
         file_data.close()
         self.current_years_to_open_new_panel = 5
         self.current_panel_writing = False
         self.backspace_released = True
+        self.is_menu_open = False
+        self.menu_position_x = 0
+        self.menu_position_y = 0
+
+        self.map_manager = MapManager(self.screen,self.player, panels=self.game_panels)
 
     def handle_input(self):
         pressed = pygame.key.get_pressed()
@@ -126,11 +133,11 @@ class Game:
                         self.current_user_input += chr(letter - 32)
                     else:
                         self.current_user_input += chr(letter)
-                    print(self.current_user_input)
+                
         elif pressed[pygame.K_BACKSPACE] and self.backspace_released:
             self.backspace_released = False
             self.current_user_input = self.current_user_input[:-1]
-            print(self.current_user_input)
+        
         elif pressed[pygame.K_UP]:
             self.player.move_player("up")
             self.last_move = 'UP'
@@ -147,9 +154,6 @@ class Game:
             listObj = []
             with open(self.json_file) as fjson:
                 listObj = json.load(fjson)
-            
-            for obj in listObj:
-                print(obj)
             if self.current_user_input:
                 listObj.append({
                     "story": self.current_user_input,
@@ -166,7 +170,11 @@ class Game:
             file_data = open('data.json')
             self.all_text_data = json.load(file_data)
             self.panel_texts = {}
+            self.game_panels = {}
             for row in self.all_text_data:
+                if 'type' in row and row['type'] == 'game_panel':
+                    self.game_panels[row['panel_id']] = (row['x_pos'], row['y_pos'])
+                    self.panels.append({'name': row['panel_id'], 'rect': pygame.Rect(row['x_pos'], row['y_pos'], 28, 33)})
                 if 'type' in row and row['type'] == 'panel':
                     if 'opening_date' in row and row['opening_date'] > datetime.date.today().strftime('%Y-%m-%d'):
                         self.panel_texts[row['panel_id']] = 'Open on %s' % row['opening_date']
@@ -215,11 +223,13 @@ class Game:
             self.map_manager.draw()
             for sprite in self.map_manager.get_group().sprites():
                 if sprite.feet.collidelist([panel['rect'] for panel in self.map_manager.get_panels()]) > -1:
-                    print('Im on a prompt')
                     self.is_on_prompt = True
                     for panel in self.map_manager.get_panels():
                         if sprite.feet.collidelist([panel['rect']]) > -1:
-                            self.show_dialog_box('Oh here is Maxime\'s panel !')
+                            if not 'new' in panel['name'] or ('new' in panel['name'] and panel['name'] in self.panel_texts.keys()):
+                                self.show_dialog_box('Oh ! Someone let a message here.')
+                            else:
+                                self.show_dialog_box('An empty panel, I could write something.')
                             self.show_dialog = True
                             break
                 if self.show_dialog:
@@ -233,15 +243,22 @@ class Game:
                                 self.show_dialog_box(self.panel_texts[panel['name']], wooden_panel_type='read')
                             else:
                                 self.show_dialog_box(self.current_user_input, wooden_panel_type='new')
+
+            # If we try to show dialog after the flip, we are after the update each time
+            if self.is_menu_open:
+                pos = (self.menu_position_x, self.menu_position_y)
+                self.dialogBox = DialogBox(menu=True, mouse_coord=pos, screen=self.screen, real_mouse_coord=pygame.mouse.get_pos())
+
             pygame.display.flip()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
-                    print('GOT KEY DOWN')
+                    print(self.player.position[0])
+                    print(self.player.position[1])
                     if event.key == pygame.K_RETURN:
-                        print('display wooden panel : %s , is on prompt : %s' % (self.is_display_wooden_panel, self.is_on_prompt))
+                    
                         if self.is_display_wooden_panel:
                             self.is_display_wooden_panel = False
                             self.is_on_prompt = False
@@ -249,8 +266,8 @@ class Game:
                             self.current_years_to_open_new_panel = 5
                             self.current_user_input = ""
                             self.is_display_wooden_panel = True
-                        print('22 display wooden panel : %s , is on prompt : %s' % (self.is_display_wooden_panel, self.is_on_prompt))
-                    print('Wooden panel ? %s' % self.is_display_wooden_panel)
+                    
+                
                     if event.key == pygame.K_KP_PLUS:
                         if self.is_display_wooden_panel:
                             self.current_years_to_open_new_panel += 1
