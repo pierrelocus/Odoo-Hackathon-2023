@@ -6,6 +6,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 import uuid
 
+import moviepy.editor as meditor
 from player import Player
 from dialogs import DialogBox
 from map import Map
@@ -213,9 +214,8 @@ class Game:
         pygame.mixer.music.play()
         clock = pygame.time.Clock()
 
-        # import moviepy.editor as meditor
-        # clip = meditor.VideoFileClip('POKEMON_START.mp4')
-        # clip.preview()
+        clip = meditor.VideoFileClip('video.mp4')
+        clip.preview()
 
         while self.running:
 
